@@ -88,10 +88,23 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+const getPostsByTerm = async (req, res) => {
+  const { term } = req.query;
+  try {
+    const posts = await postModel.searchPostsByTerm({ term });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log("Error al obtener posts por término: ", error);
+    handleHttpError(res, "ERROR_GET_POSTS_BY_TERM", 500);
+  }
+};
+
 module.exports = {
   createPost,
   updatePost,
   deletePost,
   getPostById,
   getAllPosts,
+  getPostsByTerm,
 };

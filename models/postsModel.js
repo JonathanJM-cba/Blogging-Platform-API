@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Op } = require("sequelize");
 const { sequelize } = require("../config/configDb");
 
 const Posts = sequelize.define(
@@ -31,5 +31,23 @@ const Posts = sequelize.define(
     timestamps: true,
   }
 );
+
+Posts.searchPostsByTerm = function (searchQuery = {}) {
+  const { term } = searchQuery;
+
+  const whereConditions = {};
+
+  if (term) {
+    whereConditions[Op.or] = [
+      { title: { [Op.iLike]: `%${term}%` } },
+      { content: { [Op.iLike]: `%${term}%` } },
+      { category: { [Op.iLike]: `%${term}%` } },
+    ];
+  }
+
+  return this.findAll({
+    where: whereConditions,
+  });
+};
 
 module.exports = Posts;
