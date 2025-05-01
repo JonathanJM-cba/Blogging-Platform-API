@@ -4,6 +4,7 @@ const {
   updatePost,
   deletePost,
   getPostById,
+  getAllPosts,
 } = require("../controllers/postController");
 const { validatorPost } = require("../validations/postValidation");
 const router = express.Router();
@@ -15,5 +16,7 @@ router.put("/:id", validatorPost, updatePost);
 router.delete("/:id", deletePost);
 
 router.get("/:id", getPostById);
+
+router.get("/", getAllPosts);
 
 module.exports = router;

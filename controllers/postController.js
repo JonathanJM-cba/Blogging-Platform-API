@@ -77,4 +77,21 @@ const getPostById = async (req, res) => {
   }
 };
 
-module.exports = { createPost, updatePost, deletePost, getPostById };
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await postModel.findAll({});
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log("Error al obtener todos los posts: ", error);
+    handleHttpError(res, "ERROR_GET_ALL_POSTS", 500);
+  }
+};
+
+module.exports = {
+  createPost,
+  updatePost,
+  deletePost,
+  getPostById,
+  getAllPosts,
+};
