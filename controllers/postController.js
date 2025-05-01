@@ -62,4 +62,19 @@ const deletePost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, updatePost, deletePost };
+const getPostById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    //Se verifica si existe el post
+    const post = await postModel.findByPk(id);
+
+    if (!post) return handleHttpError(res, "ERROR_POST_NOT_FOUND", 404);
+
+    res.status(200).json(post);
+  } catch (error) {
+    console.log("Error al intentar obtener post por ID: ", error);
+    handleHttpError(res, "ERROR_GET_POST_BY_ID", 500);
+  }
+};
+
+module.exports = { createPost, updatePost, deletePost, getPostById };

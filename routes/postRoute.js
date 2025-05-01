@@ -3,6 +3,7 @@ const {
   createPost,
   updatePost,
   deletePost,
+  getPostById,
 } = require("../controllers/postController");
 const { validatorPost } = require("../validations/postValidation");
 const router = express.Router();
@@ -12,5 +13,7 @@ router.post("/", validatorPost, createPost);
 router.put("/:id", validatorPost, updatePost);
 
 router.delete("/:id", deletePost);
+
+router.get("/:id", getPostById);
 
 module.exports = router;
