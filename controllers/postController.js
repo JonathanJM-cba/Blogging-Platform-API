@@ -20,4 +20,29 @@ const createPost = async (req, res) => {
   }
 };
 
-module.exports = { createPost };
+const updatePost = async (req, res) => {
+  const { id } = req.params;
+  const { title, content, category, tags } = req.body;
+  try {
+    //Se verifica la existencia del post
+    const post = await postModel.findByPk(id);
+
+    if (!post) return handleHttpError(res, "ERROR_POST_NOT_FOUND", 404);
+
+    const postData = {
+      title: title,
+      content: content,
+      category: category,
+      tags: tags,
+    };
+
+    const updatedPost = await post.update(postData);
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.log("Error al intentar actualizar post: ", error);
+    handleHttpError(res, "ERROR_UPDATE_POST", 500);
+  }
+};
+
+module.exports = { createPost, updatePost };
