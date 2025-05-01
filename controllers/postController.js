@@ -45,4 +45,21 @@ const updatePost = async (req, res) => {
   }
 };
 
-module.exports = { createPost, updatePost };
+const deletePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    //Se verifica si existe el post a eliminar
+    const post = await postModel.findByPk(id);
+
+    if (!post) return handleHttpError(res, "ERROR_POST_NOT_FOUND", 404);
+
+    await post.destroy();
+
+    res.status(204).json({ message: "Post eliminado con éxito" });
+  } catch (error) {
+    console.log("Error al intentar eliminar post: ", error);
+    handleHttpError(res, "ERROR_DELETE_POST", 500);
+  }
+};
+
+module.exports = { createPost, updatePost, deletePost };
